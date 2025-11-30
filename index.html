@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Force War — Downloads</title>
+  <meta name="description" content="Ativador de keys para Steam." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --red-600: #e03131;
+      --muted: #9aa0a6;
+      --glass: rgba(255,255,255,0.04);
+      --accent: linear-gradient(90deg,var(--red-600),#ff6b6b);
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0 }
+    html, body { overflow-x:hidden; } /* removido height:100% */
+    body {
+      font-family: Inter, system-ui, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1400px 600px at 10% 10%, rgba(224,49,49,0.06), transparent), var(--bg);
+      color:#f2f2f2;
+      -webkit-font-smoothing:antialiased;
+      line-height:1.6;
+      position:relative;
+    }
+
+    /* fundo decorativo */
+    .bg-decorativo {
+      position: fixed; inset: 0; z-index: -10; pointer-events: none; overflow: hidden;
+    }
+    .bg-decorativo .blur-ball {
+      position: absolute; border-radius: 50%; filter: blur(150px); opacity: 0.5;
+    }
+    .bg-decorativo .b1 { width:800px; height:800px; background:radial-gradient(circle,var(--red-600),transparent); top:-200px; left:-200px; }
+    .bg-decorativo .b2 { width:900px; height:900px; background:radial-gradient(circle,#ff6b6b20,transparent); bottom:-300px; right:-300px; }
+    .bg-decorativo .grid {
+      position: absolute; inset: 0; opacity: 0.05;
+      background:
+        radial-gradient(circle,#ff4d4d 0.5px,transparent 0.5px) 0 0/30px 30px,
+        radial-gradient(circle,#ffffff 0.3px,transparent 0.3px) 15px 15px/30px 30px;
+    }
+
+    /* Canvas da neve */
+    #snow-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -6;
+      pointer-events: none;
+    }
+
+    /* layout */
+    .wrap{max-width:1250px;margin:60px auto;padding:40px}
+    .topbar{display:flex;align-items:center;gap:24px;padding:28px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));box-shadow:0 10px 40px rgba(0,0,0,0.7);}
+    .brand{display:flex;gap:18px;align-items:center}
+    .logo{width:100px;height:100px;border-radius:14px;background:var(--glass);display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .logo img{width:100%;height:100%;object-fit:contain}
+    .title{font-family:Orbitron,sans-serif;font-weight:700;font-size:32px;letter-spacing:1px}
+    .subtitle{color:var(--muted);font-size:16px;margin-top:4px}
+    .badge{display:inline-flex;padding:10px 16px;border-radius:999px;font-weight:700;background:rgba(0,0,0,0.3);color:#fff;font-size:15px}
+    .topbar small{color:var(--muted);font-size:14px}
+    .banner{margin-top:30px;border-radius:18px;overflow:hidden;box-shadow:0 12px 45px rgba(0,0,0,0.8);}
+    .banner img{width:100%;height:auto;display:block;object-fit:cover;}
+    .hero{margin-top:40px;padding:40px;border-radius:16px;background:linear-gradient(90deg, rgba(176,24,24,0.15), rgba(0,0,0,0.25));display:flex;flex-wrap:wrap;gap:40px;align-items:center;}
+    .hero .info{flex:1;min-width:280px}
+    .hero h1{margin:0;font-size:30px;font-family:Orbitron,sans-serif;font-weight:700}
+    .hero p{margin-top:10px;color:var(--muted);font-size:17px;max-width:700px}
+    .btn{display:inline-flex;align-items:center;gap:12px;padding:16px 22px;border-radius:12px;font-weight:700;text-decoration:none;border:0;cursor:pointer;transition:transform .2s ease, box-shadow .3s ease;}
+    .btn-download{background:var(--accent);color:#fff;font-size:17px;box-shadow:0 8px 25px rgba(176,24,24,0.35);}
+    .btn-download:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(176,24,24,0.55)}
+    .instructions{margin-top:50px;padding:36px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.25));font-size:17px;}
+    .instructions h4{margin-bottom:14px;font-size:22px;font-family:Orbitron,sans-serif}
+    .steps{display:flex;flex-direction:column;gap:16px}
+    .step{display:flex;gap:16px;align-items:flex-start}
+    .step .num{min-width:46px;height:46px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:#fff;}
+  </style>
+</head>
+<body>
+
+  <div class="bg-decorativo">
+    <div class="blur-ball b1"></div>
+    <div class="blur-ball b2"></div>
+    <div class="grid"></div>
+  </div>
+
+  <canvas id="snow-canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("snow-canvas");
+    const ctx = canvas.getContext("2d");
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    // ❄️ Flocos menores e mais rápidos
+    const FLAKE_COUNT = 180;
+    const flakes = [];
+
+    for (let i = 0; i < FLAKE_COUNT; i++) {
+      flakes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 1.8 + 0.6, // flocos menores
+        speedX: -(Math.random() * 1.4 + 0.4), // mais rápido lateral
+        speedY: -(Math.random() * 1.0 + 0.3), // mais rápido vertical
+        opacity: Math.random() * 0.6 + 0.4
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let f of flakes) {
+        ctx.globalAlpha = f.opacity;
+        ctx.fillStyle = "#ff5c5c";
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        f.x += f.speedX;
+        f.y += f.speedY;
+
+        if (f.x < -10 || f.y < -10) {
+          f.x = canvas.width + Math.random() * 10;
+          f.y = Math.random() * canvas.height;
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  </script>
+
+  <main class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">
+          <img src="https://static.wixstatic.com/media/a1f3be_12764d58d576454a96601e3a08c7ae23~mv2.gif" alt="Force War logo">
+        </div>
+        <div>
+          <div class="title">Force War</div>
+          <div class="subtitle">Ativador de Keys</div>
+        </div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="badge">Versão: <strong style="margin-left:20px">v3.1</strong></div>
+      </div>
+    </header>
+
+    <section class="banner">
+      <img src="https://static.wixstatic.com/media/a1f3be_6085728620a6417083c95c6604d27406~mv2.jpg/v1/fill/w_980,h_552,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/ForceWarArte12_-_BRUXO_STUDIO.jpg" alt="Banner Force War Steam">
+    </section>
+
+    <section class="hero">
+      <div class="info">
+        <h1>Ative sua key com segurança e rapidez</h1>
+        <p>Baixe o Executor para acessar o game via Steam.<br>Use o Ativador apenas após ler as instruções abaixo.</p>
+        <p style="margin-top:12px;color:var(--muted);font-size:15px">⚠️ Aviso: siga as instruções de uso; não compartilhe suas credenciais. Esteja ciente das políticas da Steam.</p>
+      </div>
+      <div style="min-width:260px;display:flex;flex-direction:column;gap:14px;align-items:flex-end">
+        <a class="btn btn-download" href="#" id="dl-executor" download>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3v12" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 15v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Baixar Executor
+        </a>
+      </div>
+    </section>
+
+    <section class="instructions">
+      <h4>Como usar (rápido)</h4>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><div><strong>Baixe o Executor</strong> e salve em uma pasta temporária. Não execute antes de ler o próximo passo.</div></div>
+        <div class="step"><div class="num">2</div><div>Abra o Executor com privilégios administrativos (clique com o botão direito → Executar como administrador).</div></div>
+        <div class="step"><div class="num">3</div><div>Coloque a key no campo indicado e aguarde a confirmação de ativação. Se algo der errado, consulte o suporte no Discord.</div></div>
+        <div class="step"><div class="num">4</div><div>Após ativação bem-sucedida, mantenha sua Steam na tela de login.</div></div>
+        <div class="step"><div class="num">5</div><div>Clique em <strong>Conectar Steam</strong>, o sistema irá fazer login <strong>automáticamente</strong> na conta.</div></div>
+        <div class="step"><div class="num">6</div><div>Acesse a biblioteca e baixe o game.</div></div>
+        <div class="step"><div class="num">7</div><div>Após o download do seu game, coloque a Steam no modo <strong>Off-Line.</strong></div></div>
+        <div class="step"><div class="num">8</div><div>Agora jogue sem limites.</div></div>
+      </div>
+    </section>
+
+<!-- ========================================================= -->
+<!-- ESTILO FORCE WAR (mesma estética da página)               -->
+<!-- ========================================================= -->
+<style>
+  /* Grid igual ao seu layout */
+  .fw-suporte-grid {
+    display:flex;
+    flex-wrap:wrap;
+    gap:28px;
+  }
+
+  /* CARD */
+  .fw-card {
+    flex:1;
+    min-width:260px;
+    padding:22px;
+    border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.30));
+    border:1px solid rgba(255,255,255,0.05);
+    cursor:pointer;
+    transition:0.25s ease;
+  }
+  .fw-card:hover {
+    border-color:#e03131;
+    transform:translateY(-3px);
+    box-shadow:0 12px 32px rgba(176,24,24,0.35);
+  }
+
+  .fw-card-title {
+    font-family:Orbitron,sans-serif;
+    font-weight:700;
+    font-size:20px;
+    color:#fff;
+    margin-bottom:10px;
+  }
+  .fw-card-text {
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:18px;
+  }
+
+  .fw-btn-more {
+    display:inline-block;
+    padding:10px 16px;
+    border-radius:10px;
+    background:var(--accent);
+    font-weight:700;
+    font-size:15px;
+    color:#fff;
+    box-shadow:0 6px 20px rgba(176,24,24,0.3);
+  }
+
+
+  /* MODAL */
+  .fw-modal {
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.85);
+    backdrop-filter:blur(4px);
+    z-index:9999;
+    justify-content:center;
+    align-items:center;
+  }
+
+  .fw-modal-content {
+    width:94%;
+    max-width:600px;
+    padding:40px;
+    border-radius:18px;
+    background:linear-gradient(160deg, rgba(255,255,255,0.04), rgba(0,0,0,0.35));
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow:0 12px 40px rgba(0,0,0,0.65);
+    position:relative;
+    animation:fadeIn .3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity:0; transform:translateY(40px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  .fw-close {
+    position:absolute;
+    top:14px; right:16px;
+    background:none;
+    border:none;
+    color:#fff;
+    font-size:28px;
+    cursor:pointer;
+  }
+
+  .fw-modal-title {
+    font-family:Orbitron,sans-serif;
+    font-size:26px;
+    margin-bottom:12px;
+  }
+  .fw-modal-desc {
+    color:var(--muted);
+    font-size:16px;
+    margin-bottom:18px;
+  }
+
+  .fw-modal-list li {
+    margin-left:20px;
+    margin-bottom:8px;
+    color:#e2e2e2;
+  }
+</style>
+
+<!-- ========================================================= -->
+<!-- 🚀 SUPORTE GTA 5 — Enhanced / Legacy  (Layout Force War) -->
+<!-- ========================================================= -->
+
+<section class="instructions" style="margin-top:60px;">
+  <h4>Suporte — GTA 5</h4>
+
+  <p style="margin-bottom:25px;color:var(--muted);font-size:16px;">
+    Selecione sua versão para visualizar soluções de erros na Rockstar Games Launcher.
+  </p>
+
+  <div class="fw-suporte-grid">
+
+    <!-- Enhanced Card -->
+    <div class="fw-card" onclick="openModalFW('enhanced')">
+      <div class="fw-card-title">GTA 5 — Enhanced</div>
+      <div class="fw-card-text">Erros ao tentar se conectar com a conta Rockstar.</div>
+      <div class="fw-btn-more">Ver detalhes</div>
+    </div>
+
+    <!-- Legacy Card -->
+    <div class="fw-card" onclick="openModalFW('legacy')">
+      <div class="fw-card-title">GTA 5 — Legacy</div>
+      <div class="fw-card-text">Erros ao tentar se conectar com a conta Rockstar.</div>
+      <div class="fw-btn-more">Ver detalhes</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========================================================= -->
+<!-- MODAL FORCE WAR                                           -->
+<!-- ========================================================= -->
+<div id="fw-modal" class="fw-modal">
+  <div class="fw-modal-content">
+    <button class="fw-close" onclick="closeModalFW()">×</button>
+
+    <h2 id="fw-modal-title" class="fw-modal-title"></h2>
+    <p id="fw-modal-desc" class="fw-modal-desc"></p>
+
+    <ul id="fw-modal-list" class="fw-modal-list"></ul>
+
+    <!-- VÍDEO TUTORIAL -->
+    <div id="fw-video-box" style="width:100%;margin:25px 0;display:none;">
+      <iframe id="fw-modal-video" width="100%" height="315"
+              style="border-radius:14px;border:0;box-shadow:0 8px 25px rgba(0,0,0,0.45);"
+              src="" allowfullscreen></iframe>
+    </div>
+
+    <a id="fw-modal-download" href="#" class="btn btn-download" style="margin-top:30px;display:inline-flex;">
+      Baixar Arquivo
+    </a>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- ESTILO FORCE WAR (mesma estética da página)               -->
+<!-- ========================================================= -->
+<style>
+  /* Grid igual ao seu layout */
+  .fw-suporte-grid {
+    display:flex;
+    flex-wrap:wrap;
+    gap:28px;
+  }
+
+  /* CARD */
+  .fw-card {
+    flex:1;
+    min-width:260px;
+    padding:22px;
+    border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.30));
+    border:1px solid rgba(255,255,255,0.05);
+    cursor:pointer;
+    transition:0.25s ease;
+  }
+  .fw-card:hover {
+    border-color:#e03131;
+    transform:translateY(-3px);
+    box-shadow:0 12px 32px rgba(176,24,24,0.35);
+  }
+
+  .fw-card-title {
+    font-family:Orbitron,sans-serif;
+    font-weight:700;
+    font-size:20px;
+    color:#fff;
+    margin-bottom:10px;
+  }
+  .fw-card-text {
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:18px;
+  }
+
+  .fw-btn-more {
+    display:inline-block;
+    padding:10px 16px;
+    border-radius:10px;
+    background:var(--accent);
+    font-weight:700;
+    font-size:15px;
+    color:#fff;
+    box-shadow:0 6px 20px rgba(176,24,24,0.3);
+  }
+
+
+  /* MODAL */
+  .fw-modal {
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.85);
+    backdrop-filter:blur(4px);
+    z-index:9999;
+    justify-content:center;
+    align-items:center;
+  }
+
+  .fw-modal-content {
+    width:94%;
+    max-width:600px;
+    padding:40px;
+    border-radius:18px;
+    background:linear-gradient(160deg, rgba(255,255,255,0.04), rgba(0,0,0,0.35));
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow:0 12px 40px rgba(0,0,0,0.65);
+    position:relative;
+    animation:fadeIn .3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity:0; transform:translateY(40px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  .fw-close {
+    position:absolute;
+    top:14px; right:16px;
+    background:none;
+    border:none;
+    color:#fff;
+    font-size:28px;
+    cursor:pointer;
+  }
+
+  .fw-modal-title {
+    font-family:Orbitron,sans-serif;
+    font-size:26px;
+    margin-bottom:12px;
+  }
+  .fw-modal-desc {
+    color:var(--muted);
+    font-size:16px;
+    margin-bottom:18px;
+  }
+
+  .fw-modal-list li {
+    margin-left:20px;
+    margin-bottom:8px;
+    color:#e2e2e2;
+  }
+</style>
+
+<!-- ========================================================= -->
+<!-- SCRIPT — dados das versões + modal                        -->
+<!-- ========================================================= -->
+<script>
+    const VERSOES_FW = {
+    enhanced: {
+      title: "Grand Theft Auto 5 — Enhanced",
+      desc: "Solução de erros ao tentar se conectar com a Rockstar Games Launcher.",
+      items: [
+        "Jogue sem interferência.",
+        "Permite inicializar o GTA 5 de forma rápida.",
+        "Inicialização sem dependência do launcher.",
+        "Solução para erros na Rockstar.",
+        "Inicie o GTA 5 Instantaneamente.",
+        "Tutorial completo abaixo."
+      ],
+      video: "https://www.youtube.com/embed/lIJ3acVW2ag",
+      link: "https://github.com/Bope541/Executor-Force-War/releases/download/Bypass-Enhanced/Gta.5.Enhanced.zip"
+    },
+
+    legacy: {
+      title: "Grand Theft Auto 5 — Legacy",
+      desc: "Solução de erros ao tentar se conectar com a Rockstar Games Launcher.",
+      items: [
+        "Jogue sem interferência.",
+        "Permite inicializar o GTA 5 de forma rápida.",
+        "Inicialização sem dependência do launcher.",
+        "Solução para erros na Rockstar.",
+        "Inicie o GTA 5 Instantaneamente.",
+        "Tutorial completo abaixo."
+      ],
+      video: "https://www.youtube.com/embed/lIJ3acVW2ag",
+      link: "https://github.com/Bope541/Executor-Force-War/releases/download/Bypass-Legacy/Gta.5.Legacy.zip"
+    }
+  };
+
+  function openModalFW(tipo) {
+    const data = VERSOES_FW[tipo];
+
+    document.getElementById("fw-modal-title").textContent = data.title;
+    document.getElementById("fw-modal-desc").textContent = data.desc;
+
+    const ul = document.getElementById("fw-modal-list");
+    ul.innerHTML = "";
+    data.items.forEach(txt => {
+      const li = document.createElement("li");
+      li.textContent = txt;
+      ul.appendChild(li);
+    });
+
+    // --------- NOVO: carregar vídeo ----------
+    document.getElementById("fw-modal-video").src = data.video;
+    document.getElementById("fw-video-box").style.display = "block";
+    // ------------------------------------------
+
+    document.getElementById("fw-modal-download").href = data.link;
+
+    document.getElementById("fw-modal").style.display = "flex";
+  }
+
+  function closeModalFW() {
+    document.getElementById("fw-modal-video").src = "";
+    document.getElementById("fw-modal").style.display = "none";
+  }
+</script>
+
+    <footer style="margin-top:60px;padding:40px 20px;color:var(--muted);font-size:15px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.02);border-radius:14px;">
+      <div style="margin-bottom:20px;">
+        <h4 style="font-family:Orbitron,sans-serif;font-size:20px;color:#fff;margin-bottom:6px;">Suporte Oficial</h4>
+        <p style="max-width:500px;margin:0 auto 16px;color:var(--muted);">
+          Precisa de ajuda com sua key ou ativação? Nossa equipe oferece suporte especializado diretamente pelo Discord.
+        </p>
+        <a href="https://discord.gg/y3d62DcpJt" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(90deg,#5865F2,#7289DA);color:#fff;
+                  padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none;
+                  transition:transform .25s ease,box-shadow .25s ease;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M22 24l-4.64-4.24L19 24h3zM12 2a10 10 0 00-10 10v6a2 2 0 002 2h1v-2H4v-6a8 8 0 0116 0v6h-1v2h1a2 2 0 002-2v-6A10 10 0 0012 2zm-3.8 8.2a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0zm7.6 0a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0z" fill="currentColor"/>
+          </svg>
+          Ir para o Discord
+        </a>
+      </div>
+
+      <div style="margin-top:25px;color:var(--muted);">
+        © <strong>Force War</strong> — Não compartilhe seu acesso.
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const CONFIG = { executorUrl: 'https://github.com/Bope541/Executor-Force-War/releases/download/3.0/Force.War.exe' };
+    document.getElementById('dl-executor').href = CONFIG.executorUrl;
+  </script>
+</body>
+</html>
