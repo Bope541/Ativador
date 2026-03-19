@@ -4,9 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Force War — Termos de Uso</title>
-  <meta name="description" content="Termos de uso da Force War para acesso ao site, ativador, downloads e serviços digitais." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -23,80 +21,93 @@
       font-family: Inter, system-ui;
       background: radial-gradient(1400px 600px at 10% 10%, rgba(224,49,49,0.06), transparent), var(--bg);
       color:#f2f2f2;
-      line-height:1.6;
     }
 
-    .wrap{max-width:1250px;margin:60px auto;padding:40px}
+    /* fundo */
+    .bg-decorativo {
+      position: fixed; inset: 0; z-index: -10;
+    }
+    .blur-ball {
+      position: absolute; border-radius: 50%; filter: blur(150px); opacity: 0.5;
+    }
+    .b1 { width:800px; height:800px; background:radial-gradient(circle,var(--red-600),transparent); top:-200px; left:-200px; }
+    .b2 { width:900px; height:900px; background:radial-gradient(circle,#ff6b6b20,transparent); bottom:-300px; right:-300px; }
+
+    .grid {
+      position:absolute; inset:0; opacity:0.05;
+      background:
+        radial-gradient(circle,#ff4d4d 0.5px,transparent 0.5px) 0 0/30px 30px,
+        radial-gradient(circle,#fff 0.3px,transparent 0.3px) 15px 15px/30px 30px;
+    }
+
+    #snow-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -6;
+    }
+
+    .wrap{max-width:1200px;margin:60px auto;padding:40px}
 
     .topbar{
       display:flex;
       align-items:center;
-      gap:24px;
-      padding:28px;
-      border-radius:18px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));
+      gap:20px;
+      padding:24px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.03);
     }
 
-    .logo{
-      width:90px;height:90px;border-radius:14px;background:var(--glass);
-      display:flex;align-items:center;justify-content:center;
-    }
-
-    .title{font-family:Orbitron;font-size:28px;font-weight:700}
+    .logo{width:80px;height:80px;border-radius:12px;background:var(--glass)}
+    .title{font-family:Orbitron;font-size:28px}
     .subtitle{color:var(--muted)}
 
     .hero{
       margin-top:30px;
-      padding:40px;
+      padding:30px;
       border-radius:16px;
       background:linear-gradient(90deg, rgba(176,24,24,0.15), rgba(0,0,0,0.25));
     }
 
     .content{
       margin-top:40px;
-      padding:36px;
+      padding:30px;
       border-radius:16px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.25));
+      background:rgba(255,255,255,0.03);
     }
 
-    h2{
-      font-family:Orbitron;
-      margin-bottom:12px;
-      margin-top:20px;
-    }
-
-    p, li{
-      color:#d8d8d8;
-      margin-bottom:10px;
-    }
-
+    h2{font-family:Orbitron;margin-top:20px;margin-bottom:10px}
+    p, li{color:#d8d8d8;margin-bottom:10px}
     ul{margin-left:20px}
 
     .alert{
-      margin-top:20px;
-      padding:18px;
-      border-radius:12px;
+      padding:15px;
+      border-radius:10px;
       background:rgba(224,49,49,0.1);
       border:1px solid rgba(224,49,49,0.3);
     }
 
     .footer{
-      margin-top:60px;
+      margin-top:50px;
       text-align:center;
       color:var(--muted);
     }
-
-    a{color:#fff}
   </style>
 </head>
+
 <body>
+
+<div class="bg-decorativo">
+  <div class="blur-ball b1"></div>
+  <div class="blur-ball b2"></div>
+  <div class="grid"></div>
+</div>
+
+<canvas id="snow-canvas"></canvas>
 
 <main class="wrap">
 
 <header class="topbar">
-  <div class="logo">
-    <img src="https://static.wixstatic.com/media/a1f3be_12764d58d576454a96601e3a08c7ae23~mv2.gif" width="100%">
-  </div>
+  <div class="logo"></div>
   <div>
     <div class="title">Force War</div>
     <div class="subtitle">Termos de Uso</div>
@@ -105,92 +116,88 @@
 
 <section class="hero">
   <h1>Termos de Uso</h1>
-  <p>Ao acessar, baixar ou utilizar qualquer serviço da Force War, você concorda com os termos abaixo.</p>
+  <p>Ao utilizar nossos serviços, você concorda com os termos abaixo.</p>
 </section>
 
 <section class="content">
 
-<h2>1. Natureza do Serviço</h2>
-<p>
-A Force War disponibiliza conteúdos digitais, ferramentas, arquivos e instruções voltadas ao acesso e ativação de jogos.
-Todos os produtos são digitais, com entrega automática e imediata.
-</p>
+<h2>1. Serviço</h2>
+<p>A Force War fornece produtos digitais com entrega automática.</p>
 
-<h2>2. Aceitação dos Termos</h2>
-<p>
-Ao utilizar o site, baixar arquivos ou acessar qualquer recurso da plataforma, o usuário declara estar ciente e de acordo com estes termos.
-</p>
-
-<h2>3. Entrega do Produto</h2>
+<h2>2. Entrega</h2>
 <ul>
-<li>A entrega ocorre de forma digital e imediata.</li>
-<li>Não há envio físico.</li>
-<li>O acesso é disponibilizado após confirmação do pagamento.</li>
+<li>Entrega imediata</li>
+<li>Produto digital</li>
+<li>Sem envio físico</li>
 </ul>
 
-<h2>4. Política de Reembolso</h2>
+<h2>3. Reembolso</h2>
 <div class="alert">
-<strong>Produtos digitais não são reembolsáveis após o acesso, download ou utilização.</strong>
+Produtos digitais NÃO são reembolsáveis após uso ou acesso.
 </div>
 
-<p>
-Conforme o Art. 49 do Código de Defesa do Consumidor, o direito de arrependimento pode ser limitado em conteúdos digitais já utilizados.
-</p>
-
+<h2>4. Responsabilidade</h2>
 <ul>
-<li>Ao acessar ou utilizar o produto, o usuário renuncia ao direito de arrependimento.</li>
-<li>Não serão aceitos reembolsos por desconhecimento de funcionamento.</li>
-<li>Não serão aceitos reembolsos após entrega concluída.</li>
+<li>Não compartilhar acesso</li>
+<li>Seguir instruções</li>
+<li>Uso por conta do usuário</li>
 </ul>
 
-<h2>5. Responsabilidade do Usuário</h2>
-<ul>
-<li>Não compartilhar acessos ou arquivos adquiridos.</li>
-<li>Seguir corretamente as instruções fornecidas.</li>
-<li>Utilizar o serviço de forma responsável.</li>
-</ul>
+<h2>5. Limitações</h2>
+<p>Não nos responsabilizamos por bloqueios externos ou uso incorreto.</p>
 
-<h2>6. Limitações</h2>
-<p>
-A Force War não se responsabiliza por:
-</p>
-<ul>
-<li>uso incorreto do sistema;</li>
-<li>problemas causados por terceiros;</li>
-<li>bloqueios externos (Steam, Rockstar, etc);</li>
-<li>ambiente do usuário (PC, internet, antivírus).</li>
-</ul>
+<h2>6. Suporte</h2>
+<p>Disponível via Discord oficial.</p>
 
-<h2>7. Suporte</h2>
-<p>
-O suporte é prestado exclusivamente pelos canais oficiais.
-</p>
+<h2>7. Alterações</h2>
+<p>Os termos podem mudar sem aviso prévio.</p>
 
-<h2>8. Uso Indevido</h2>
-<p>
-Qualquer tentativa de fraude, abuso ou contestação indevida poderá resultar em bloqueio permanente.
-</p>
-
-<h2>9. Alterações</h2>
-<p>
-Os termos podem ser atualizados a qualquer momento.
-</p>
-
-<h2>10. Contato</h2>
-<p>
-Dúvidas? Acesse nosso suporte oficial.
-</p>
-
-<p>
-<a href="/">← Voltar</a>
-</p>
+<h2>8. Contato</h2>
+<p><a href="/">← Voltar</a></p>
 
 </section>
 
 <div class="footer">
-© Force War — Todos os direitos reservados
+© Force War
 </div>
 
 </main>
+
+<script>
+const canvas = document.getElementById("snow-canvas");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+const flakes = [];
+for (let i = 0; i < 150; i++) {
+  flakes.push({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*2,
+    s: Math.random()*1
+  });
+}
+
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  flakes.forEach(f=>{
+    ctx.beginPath();
+    ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+    ctx.fillStyle="#ff4d4d";
+    ctx.fill();
+    f.y -= f.s;
+    if(f.y < 0){f.y = canvas.height;}
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
 </body>
 </html>
