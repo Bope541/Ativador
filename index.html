@@ -10,6 +10,65 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
+
+    .legal-links{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:22px;
+    }
+
+    .legal-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      border-radius:10px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.28));
+      border:1px solid rgba(255,255,255,0.06);
+      transition:transform .2s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+    }
+
+    .legal-link:hover{
+      transform:translateY(-2px);
+      border-color:rgba(224,49,49,0.45);
+      box-shadow:0 10px 28px rgba(176,24,24,0.22);
+      background:linear-gradient(180deg, rgba(255,255,255,0.07), rgba(0,0,0,0.34));
+    }
+
+    .hero-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .hero-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      border-radius:10px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      transition:transform .2s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+
+    .hero-link:hover{
+      transform:translateY(-2px);
+      border-color:rgba(224,49,49,0.45);
+      box-shadow:0 10px 28px rgba(176,24,24,0.18);
+    }
+
     :root {
       --bg: #0b0b0b;
       --red-600: #e03131;
@@ -165,7 +224,13 @@
         <h1>Ative sua key com segurança e rapidez</h1>
         <p>Baixe o Executor para acessar o game via Steam.<br>Use o Ativador apenas após ler as instruções abaixo.</p>
         <p style="margin-top:12px;color:var(--muted);font-size:15px">⚠️ Aviso: siga as instruções de uso; não compartilhe suas credenciais. Esteja ciente das políticas da Steam.</p>
+
+        <div class="hero-links">
+          <a class="hero-link" href="/termos.html">Termos de Uso</a>
+          <a class="hero-link" href="/privacidade.html">Política de Privacidade</a>
+        </div>
       </div>
+
       <div style="min-width:260px;display:flex;flex-direction:column;gap:14px;align-items:flex-end">
         <a class="btn btn-download" href="#" id="dl-executor" download>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -544,7 +609,7 @@
           Precisa de ajuda com sua key ou ativação? Nossa equipe oferece suporte especializado diretamente pelo Discord.
         </p>
         <a href="https://discord.gg/y3d62DcpJt" target="_blank" rel="noopener"
-           style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(90deg,#5865F2,#7289DA);color:#fff;
+          style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(90deg,#5865F2,#7289DA);color:#fff;
                   padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none;
                   transition:transform .25s ease,box-shadow .25s ease;">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -552,6 +617,11 @@
           </svg>
           Ir para o Discord
         </a>
+      </div>
+
+      <div class="legal-links">
+        <a class="legal-link" href="/termos.html">Termos de Uso</a>
+        <a class="legal-link" href="/privacidade.html">Política de Privacidade</a>
       </div>
 
       <div style="margin-top:25px;color:var(--muted);">
@@ -566,4 +636,3 @@
   </script>
 </body>
 </html>
-
