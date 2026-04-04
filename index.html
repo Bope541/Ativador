@@ -203,7 +203,7 @@
     <header class="topbar">
       <div class="brand">
         <div class="logo">
-          <img src="https://static.wixstatic.com/media/a1f3be_12764d58d576454a96601e3a08c7ae23~mv2.gif" alt="Force War logo">
+          <img src="./imagens/force-war-logo.gif" alt="Force War logo">
         </div>
         <div>
           <div class="title">Force War</div>
@@ -211,12 +211,12 @@
         </div>
       </div>
       <div style="margin-left:auto;text-align:right">
-        <div class="badge">Versão: <strong style="margin-left:20px">v4.2</strong></div>
+        <div class="badge">Versão: <strong id="site-version" style="margin-left:20px">v4.2</strong></div>
       </div>
     </header>
 
     <section class="banner">
-      <img src="https://static.wixstatic.com/media/a1f3be_6085728620a6417083c95c6604d27406~mv2.jpg/v1/fill/w_980,h_552,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/ForceWarArte12_-_BRUXO_STUDIO.jpg" alt="Banner Force War Steam">
+      <img src="./imagens/denuvo-banner.jpg" alt="Banner Force War Steam">
     </section>
 
     <section class="hero">
@@ -630,9 +630,16 @@
     </footer>
   </main>
 
+  <script src="./js/force-war-config.js"></script>
   <script>
-    const CONFIG = { executorUrl: 'https://github.com/Bope541/Executor-Force-War/releases/download/v4.2/ForceWar.exe' };
+    const CONFIG = window.FW_SITE_CONFIG || {
+      version: 'v4.2',
+      executorUrl: 'https://github.com/Bope541/Executor-Force-War/releases/download/v4.2/ForceWar.exe'
+    };
+
     document.getElementById('dl-executor').href = CONFIG.executorUrl;
+    document.getElementById('site-version').textContent = CONFIG.version;
   </script>
 </body>
 </html>F
+s
