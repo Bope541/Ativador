@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Force War — Denuvo</title>
+  <meta name="description" content="Ativador de keys para Steam com suporte a Denuvo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .legal-links{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:22px;
+    }
+
+    .legal-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      border-radius:10px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.28));
+      border:1px solid rgba(255,255,255,0.06);
+      transition:transform .2s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+    }
+
+    .legal-link:hover{
+      transform:translateY(-2px);
+      border-color:rgba(224,49,49,0.45);
+      box-shadow:0 10px 28px rgba(176,24,24,0.22);
+      background:linear-gradient(180deg, rgba(255,255,255,0.07), rgba(0,0,0,0.34));
+    }
+
+    .hero-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .hero-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      border-radius:10px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      transition:transform .2s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+
+    .hero-link:hover{
+      transform:translateY(-2px);
+      border-color:rgba(224,49,49,0.45);
+      box-shadow:0 10px 28px rgba(176,24,24,0.18);
+    }
+
+    :root {
+      --bg: #0b0b0b;
+      --red-600: #e03131;
+      --muted: #9aa0a6;
+      --glass: rgba(255,255,255,0.04);
+      --accent: linear-gradient(90deg,var(--red-600),#ff6b6b);
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0 }
+    html, body { overflow-x:hidden; }
+    body {
+      font-family: Inter, system-ui, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1400px 600px at 10% 10%, rgba(224,49,49,0.06), transparent), var(--bg);
+      color:#f2f2f2;
+      -webkit-font-smoothing:antialiased;
+      line-height:1.6;
+      position:relative;
+    }
+
+    .bg-decorativo {
+      position: fixed; inset: 0; z-index: -10; pointer-events: none; overflow: hidden;
+    }
+    .bg-decorativo .blur-ball {
+      position: absolute; border-radius: 50%; filter: blur(150px); opacity: 0.5;
+    }
+    .bg-decorativo .b1 { width:800px; height:800px; background:radial-gradient(circle,var(--red-600),transparent); top:-200px; left:-200px; }
+    .bg-decorativo .b2 { width:900px; height:900px; background:radial-gradient(circle,#ff6b6b20,transparent); bottom:-300px; right:-300px; }
+    .bg-decorativo .grid {
+      position: absolute; inset: 0; opacity: 0.05;
+      background:
+        radial-gradient(circle,#ff4d4d 0.5px,transparent 0.5px) 0 0/30px 30px,
+        radial-gradient(circle,#ffffff 0.3px,transparent 0.3px) 15px 15px/30px 30px;
+    }
+
+    #snow-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -6;
+      pointer-events: none;
+    }
+
+    .wrap{max-width:1250px;margin:60px auto;padding:40px}
+    .topbar{display:flex;align-items:center;gap:24px;padding:28px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));box-shadow:0 10px 40px rgba(0,0,0,0.7);}
+    .brand{display:flex;gap:18px;align-items:center}
+    .logo{width:100px;height:100px;border-radius:14px;background:var(--glass);display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .logo img{width:100%;height:100%;object-fit:contain}
+    .title{font-family:Orbitron,sans-serif;font-weight:700;font-size:32px;letter-spacing:1px}
+    .subtitle{color:var(--muted);font-size:16px;margin-top:4px}
+    .badge{display:inline-flex;padding:10px 16px;border-radius:999px;font-weight:700;background:rgba(0,0,0,0.3);color:#fff;font-size:15px}
+    .banner{margin-top:30px;border-radius:18px;overflow:hidden;box-shadow:0 12px 45px rgba(0,0,0,0.8);}
+    .banner img{width:100%;height:auto;display:block;object-fit:cover;}
+    .hero{margin-top:40px;padding:40px;border-radius:16px;background:linear-gradient(90deg, rgba(176,24,24,0.15), rgba(0,0,0,0.25));display:flex;flex-wrap:wrap;gap:40px;align-items:center;}
+    .hero .info{flex:1;min-width:280px}
+    .hero h1{margin:0;font-size:30px;font-family:Orbitron,sans-serif;font-weight:700}
+    .hero p{margin-top:10px;color:var(--muted);font-size:17px;max-width:700px}
+    .btn{display:inline-flex;align-items:center;gap:12px;padding:16px 22px;border-radius:12px;font-weight:700;text-decoration:none;border:0;cursor:pointer;transition:transform .2s ease, box-shadow .3s ease;}
+    .btn-download{background:var(--accent);color:#fff;font-size:17px;box-shadow:0 8px 25px rgba(176,24,24,0.35);}
+    .btn-download:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(176,24,24,0.55)}
+    .instructions,
+    .video-section{margin-top:50px;padding:36px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.25));font-size:17px;}
+    .instructions h4,
+    .video-section h4{margin-bottom:14px;font-size:22px;font-family:Orbitron,sans-serif}
+    .steps{display:flex;flex-direction:column;gap:16px}
+    .step{display:flex;gap:16px;align-items:flex-start}
+    .step .num{min-width:46px;height:46px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:#fff;}
+    .video-section p{color:var(--muted);margin-bottom:20px}
+    .video-frame-wrap{
+      display:none;
+      overflow:hidden;
+      border-radius:16px;
+      box-shadow:0 12px 35px rgba(0,0,0,0.45);
+      background:#050505;
+    }
+    .video-frame-wrap.is-active{display:block}
+    .video-frame{
+      width:100%;
+      min-height:260px;
+      aspect-ratio:16 / 9;
+      border:0;
+      display:block;
+    }
+
+    @media (max-width: 768px) {
+      .wrap{padding:22px}
+      .topbar{flex-direction:column;align-items:flex-start}
+      .hero{padding:28px}
+      .title{font-size:28px}
+      .hero h1{font-size:26px}
+      .video-frame{min-height:220px}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-decorativo">
+    <div class="blur-ball b1"></div>
+    <div class="blur-ball b2"></div>
+    <div class="grid"></div>
+  </div>
+
+  <canvas id="snow-canvas"></canvas>
+
+  <main class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">
+          <img src="./imagens/force-war-logo.gif" alt="Force War logo">
+        </div>
+        <div>
+          <div class="title">Force War</div>
+          <div class="subtitle">Ativador de Keys</div>
+        </div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="badge">Versão: <strong id="site-version" style="margin-left:20px">v4.2</strong></div>
+      </div>
+    </header>
+
+    <section class="banner">
+      <img src="./imagens/denuvo-banner.jpg" alt="Banner Force War Denuvo">
+    </section>
+
+    <section class="hero">
+      <div class="info">
+        <h1>Ative sua key com segurança e rapidez</h1>
+        <p>Baixe o Executor para acessar o game via Steam.<br>Use o Ativador apenas após ler as instruções abaixo.</p>
+        <p style="margin-top:12px;color:var(--muted);font-size:15px">Aviso: siga as instruções de uso; não compartilhe suas credenciais. Esteja ciente das políticas da Steam.</p>
+
+        <div class="hero-links">
+          <a class="hero-link" href="/termos.html">Termos de Uso</a>
+          <a class="hero-link" href="/privacidade.html">Política de Privacidade</a>
+        </div>
+      </div>
+
+      <div style="min-width:260px;display:flex;flex-direction:column;gap:14px;align-items:flex-end">
+        <a class="btn btn-download" href="#" id="dl-executor" download>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v12" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 15v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Baixar Executor
+        </a>
+      </div>
+    </section>
+
+    <section class="video-section">
+      <h4>Video Tutorial</h4>
+      <p>Configure abaixo o video explicativo da pagina. Voce pode usar YouTube embed ou um arquivo <strong>.mp4</strong> hospedado diretamente no GitHub Releases.</p>
+      <div id="video-frame-wrap" class="video-frame-wrap">
+        <iframe
+          id="video-frame"
+          class="video-frame"
+          src=""
+          title="Tutorial Denuvo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+        <video
+          id="video-player"
+          class="video-frame"
+          controls
+          playsinline
+          preload="metadata"
+          style="display:none;background:#000;">
+          <source id="video-player-source" src="" type="video/mp4">
+          Seu navegador nao suporta video HTML5.
+        </video>
+      </div>
+    </section>
+
+    <section class="instructions">
+      <h4>Como usar (detalhado)</h4>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><div><strong>Baixe o ativador</strong> e mova para a área de trabalho. Não execute antes de ler o próximo passo.</div></div>
+        <div class="step"><div class="num">2</div><div>Se caso o download for bloqueado, ou ao executar o ativador o antivírus alertar, siga as instruções para permitir a execução.</div></div>
+        <div class="step"><div class="num">3</div><div>Abra o Executor com privilégios administrativos (clique com o botão direito → Executar como administrador).</div></div>
+        <div class="step"><div class="num">4</div><div>Coloque a key no campo indicado e clique em <strong>Ativar Key</strong>, aguarde o processo de validação.</div></div>
+        <div class="step"><div class="num">5</div><div>Após validação bem-sucedida, clique em <strong>Implementar</strong>, sua Steam deverá atualizar e reiniciar sozinha.</div></div>
+        <div class="step"><div class="num">6</div><div>Agora entre na sua Steam, na conta aonde deseja jogar o game e localize o game na sua lista da biblioteca e faça o download.</div></div>
+        <div class="step"><div class="num">7</div><div>Assim que o game estiver baixado, nas configurações da Steam, clique em → Trocar conta...</div></div>
+        <div class="step"><div class="num">8</div><div>Deixe sua Steam na tela de login e senha, assim que o QrCode ficar visível, está pronto para o próximo passo do ativador.</div></div>
+        <div class="step"><div class="num">9</div><div>Dentro do ativador, logo a baixo do botão <strong>Implementar</strong>, teremos o botão <strong>Conectar Steam</strong>.</div></div>
+        <div class="step"><div class="num">10</div><div>Clique no botão <strong>Conectar Steam</strong>, o ativador irá colocar automaticamente: usuário e senha e irá para a tela de código.</div></div>
+        <div class="step"><div class="num">11</div><div>O ativador irá colocar o código de 2FA automaticamente e irá entrar na conta, se caso interromper ou mecher em outro programa, o processo é cancelado.</div></div>
+        <div class="step"><div class="num">12</div><div>Caso ocorra alguma interferencia no processo de login automatico, feche o ativador e sua Steam e repita o processo de login pelo ativador.</div></div>
+        <div class="step"><div class="num">13</div><div>Agora com a conta conectada, clique em → <strong>Amigos</strong> e depois em → <strong>Enviar pedido de amizade...</strong>.</div></div>
+        <div class="step"><div class="num">14</div><div>Envie uma solicitação de amizade para a conta aonde fez a <strong>Implementação</strong>, e baixou o game.</div></div>
+        <div class="step"><div class="num">15</div><div>Nas configurações da Steam, clique em → Trocar conta...</div></div>
+        <div class="step"><div class="num">16</div><div>Entre na sua conta, aonde baixou o game e aceite a solicitação de amizade da conta fornecida.</div></div>
+        <div class="step"><div class="num">17</div><div>Nas configurações da Steam, clique em → Trocar conta...</div></div>
+        <div class="step"><div class="num">18</div><div>Agora entre na conta conectada pelo ativador novamente, clique no → Icone do perfil → <strong>Detalhes da conta xxxx</strong> e depois em → <strong>Gerenciamento da família</strong>.</div></div>
+        <div class="step"><div class="num">19</div><div>Caso não tenha uma família criada, crie uma e renomeie como quiser.</div></div>
+        <div class="step"><div class="num">20</div><div>Caso já tenha, clique em → <strong>Convidar membro</strong>, depois → <strong>Buscar na lista de amigos</strong>, selecione sua conta e clique → <strong>Convidar como adulto</strong>.</div></div>
+        <div class="step"><div class="num">21</div><div>Nas configurações da Steam, clique em → Trocar conta...</div></div>
+        <div class="step"><div class="num">22</div><div>Retorne para sua conta e nas notificações da Steam estará lá o convite de aceitação, clique em aceitar.</div></div>
+        <div class="step"><div class="num">23</div><div>Após isso irá pedir confirmação por código via e-mail da sua conta pessoal, verifique o gmail da sua conta e insirá o código de confirmação.</div></div>
+        <div class="step"><div class="num">24</div><div>Após isso, estará na biblioteca, agora poderá iniciar o seu game 1 vez antes de proceguirmos para os passos finais.</div></div>
+        <div class="step"><div class="num">25</div><div>Assim entrar no meu principal do game, já pode fechar o game.</div></div>
+        <div class="step"><div class="num">26</div><div>Agora na sua conta, clique no → Icone do perfil → <strong>Detalhes da conta xxxx</strong> e depois em → <strong>Gerenciamento da família</strong>, e clique no seu perfil e selecione → <strong>Sair da família</strong>.</div></div>
+        <div class="step"><div class="num">27</div><div><strong>NÃO FIQUE NA BIBLIOTE!</strong> caso alguem inicie o game na outra conta do ativador, você perde a permissão de jogar o seu game na conta pessoal.</div></div>
+        <div class="step"><div class="num">28</div><div><strong>NÃO JOGUE NA CONTA FORNECIDA PELO ATIVADOR, isso tbm remove sua licença de jogar o seu game na conta pessoal.</strong></div></div>
+        <div class="step"><div class="num">29</div><div>Agora pode remover a conta fornecida pelo ativador da sua Steam, seu game passsou a ser licenciado e ativo na sua bibliteca pessoal.</div></div>
+        <div class="step"><div class="num">30</div><div>Caso tenha ficado com alguma dúvida, assista ao passo a passo em vídeo logo acima no início da página.</div></div>
+
+      </div>
+    </section>
+
+    <footer style="margin-top:60px;padding:40px 20px;color:var(--muted);font-size:15px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.02);border-radius:14px;">
+      <div style="margin-bottom:20px;">
+        <h4 style="font-family:Orbitron,sans-serif;font-size:20px;color:#fff;margin-bottom:6px;">Suporte Oficial</h4>
+        <p style="max-width:500px;margin:0 auto 16px;color:var(--muted);">
+          Precisa de ajuda com sua key ou ativacao? Nossa equipe oferece suporte especializado diretamente pelo Discord.
+        </p>
+        <a href="https://discord.gg/y3d62DcpJt" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(90deg,#5865F2,#7289DA);color:#fff;
+                  padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none;
+                  transition:transform .25s ease,box-shadow .25s ease;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M22 24l-4.64-4.24L19 24h3zM12 2a10 10 0 00-10 10v6a2 2 0 002 2h1v-2H4v-6a8 8 0 0116 0v6h-1v2h1a2 2 0 002-2v-6A10 10 0 0012 2zm-3.8 8.2a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0zm7.6 0a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0z" fill="currentColor"/>
+          </svg>
+          Ir para o Discord
+        </a>
+      </div>
+
+      <div class="legal-links">
+        <a class="legal-link" href="/termos.html">Termos de Uso</a>
+        <a class="legal-link" href="/privacidade.html">Politica de Privacidade</a>
+      </div>
+
+      <div style="margin-top:25px;color:var(--muted);">
+        &copy; <strong>Force War</strong> - Nao compartilhe seu acesso.
+      </div>
+    </footer>
+  </main>
+
+  <script src="./js/force-war-config.js"></script>
+  <script>
+    const canvas = document.getElementById("snow-canvas");
+    const ctx = canvas.getContext("2d");
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    const FLAKE_COUNT = 180;
+    const flakes = [];
+
+    for (let i = 0; i < FLAKE_COUNT; i++) {
+      flakes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 1.8 + 0.6,
+        speedX: -(Math.random() * 1.4 + 0.4),
+        speedY: -(Math.random() * 1.0 + 0.3),
+        opacity: Math.random() * 0.6 + 0.4
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const f of flakes) {
+        ctx.globalAlpha = f.opacity;
+        ctx.fillStyle = "#ff5c5c";
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        f.x += f.speedX;
+        f.y += f.speedY;
+
+        if (f.x < -10 || f.y < -10) {
+          f.x = canvas.width + Math.random() * 10;
+          f.y = Math.random() * canvas.height;
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    const SITE_CONFIG = window.FW_SITE_CONFIG || {
+      version: 'v4.2',
+      executorUrl: 'https://github.com/Bope541/Executor-Force-War/releases/download/v4.2/ForceWar.exe'
+    };
+
+    const CONFIG = {
+      videoProvider: 'youtube',
+      youtubeEmbedUrl: 'https://www.youtube.com/embed/V8OTibWIdPA',
+      directVideoUrl: ''
+    };
+
+    document.getElementById('dl-executor').href = SITE_CONFIG.executorUrl;
+    document.getElementById('site-version').textContent = SITE_CONFIG.version;
+
+    const videoFrameWrap = document.getElementById('video-frame-wrap');
+    const youtubeFrame = document.getElementById('video-frame');
+    const videoPlayer = document.getElementById('video-player');
+    const videoPlayerSource = document.getElementById('video-player-source');
+
+    if (CONFIG.videoProvider === 'youtube' && CONFIG.youtubeEmbedUrl) {
+      youtubeFrame.style.display = 'block';
+      videoPlayer.style.display = 'none';
+      youtubeFrame.src = CONFIG.youtubeEmbedUrl;
+      videoFrameWrap.classList.add('is-active');
+    }
+
+    if (CONFIG.videoProvider === 'mp4' && CONFIG.directVideoUrl) {
+      youtubeFrame.style.display = 'none';
+      youtubeFrame.src = '';
+      videoPlayer.style.display = 'block';
+      videoPlayerSource.src = CONFIG.directVideoUrl;
+      videoPlayer.load();
+      videoFrameWrap.classList.add('is-active');
+    }
+  </script>
+</body>
+</html>
