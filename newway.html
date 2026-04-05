@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Force War - NewWay</title>
+  <meta name="description" content="Tutorial completo de uso do mod menu NewWay com vídeos, passos de injeção e recomendações de segurança." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --red-600: #e03131;
+      --muted: #9aa0a6;
+      --glass: rgba(255,255,255,0.04);
+      --accent: linear-gradient(90deg,var(--red-600),#ff6b6b);
+      --card: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.32));
+      --border: rgba(255,255,255,0.07);
+      --ok: #74c69d;
+      --warn: #ffd166;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { overflow-x: hidden; }
+    body {
+      font-family: Inter, system-ui, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(1400px 600px at 10% 10%, rgba(224,49,49,0.06), transparent), var(--bg);
+      color: #f2f2f2;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .bg-decorativo {
+      position: fixed;
+      inset: 0;
+      z-index: -10;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-decorativo .blur-ball {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(150px);
+      opacity: 0.5;
+    }
+
+    .bg-decorativo .b1 {
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, var(--red-600), transparent);
+      top: -200px;
+      left: -200px;
+    }
+
+    .bg-decorativo .b2 {
+      width: 900px;
+      height: 900px;
+      background: radial-gradient(circle, #ff6b6b20, transparent);
+      bottom: -300px;
+      right: -300px;
+    }
+
+    .bg-decorativo .grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      background:
+        radial-gradient(circle, #ff4d4d 0.5px, transparent 0.5px) 0 0/30px 30px,
+        radial-gradient(circle, #ffffff 0.3px, transparent 0.3px) 15px 15px/30px 30px;
+    }
+
+    #snow-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -6;
+      pointer-events: none;
+    }
+
+    .wrap { max-width: 1250px; margin: 60px auto; padding: 40px; }
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 28px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+    }
+    .brand { display: flex; gap: 18px; align-items: center; }
+    .logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 14px;
+      background: var(--glass);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .logo img { width: 100%; height: 100%; object-fit: contain; }
+    .title { font-family: Orbitron, sans-serif; font-weight: 700; font-size: 32px; letter-spacing: 1px; }
+    .subtitle { color: var(--muted); font-size: 16px; margin-top: 4px; }
+    .badge {
+      display: inline-flex;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .banner {
+      margin-top: 30px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 45px rgba(0,0,0,0.8);
+    }
+
+    .banner img { width: 100%; height: auto; display: block; object-fit: cover; }
+
+    .hero {
+      margin-top: 40px;
+      padding: 40px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, rgba(176,24,24,0.15), rgba(0,0,0,0.25));
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .hero .info { flex: 1; min-width: 280px; }
+    .hero h1 { font-size: 30px; font-family: Orbitron, sans-serif; font-weight: 700; }
+    .hero p { margin-top: 10px; color: var(--muted); font-size: 17px; max-width: 760px; }
+
+    .hero-links,
+    .legal-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .hero-link,
+    .legal-link,
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      transition: transform .2s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+    }
+
+    .hero-link,
+    .legal-link {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+    }
+
+    .hero-link:hover,
+    .legal-link:hover,
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(224,49,49,0.45);
+      box-shadow: 0 10px 28px rgba(176,24,24,0.2);
+    }
+
+    .btn {
+      background: var(--accent);
+      border: 1px solid transparent;
+      box-shadow: 0 8px 25px rgba(176,24,24,0.35);
+    }
+
+    .footer-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .hero-actions {
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: stretch;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .hero-note {
+      padding: 18px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.28);
+      border: 1px solid var(--border);
+      color: #d8d8d8;
+      font-size: 15px;
+    }
+
+    .panel,
+    .tutorial-card,
+    .tips-grid {
+      margin-top: 34px;
+    }
+
+    .section-card {
+      padding: 36px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.25));
+    }
+
+    .section-title {
+      margin-bottom: 12px;
+      font-size: 24px;
+      font-family: Orbitron, sans-serif;
+    }
+
+    .section-copy {
+      color: var(--muted);
+      margin-bottom: 24px;
+      font-size: 16px;
+    }
+
+    .tutorial-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .tutorial-card {
+      padding: 26px;
+      border-radius: 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.32);
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .tutorial-card h3 {
+      font-family: Orbitron, sans-serif;
+      font-size: 21px;
+      margin-bottom: 8px;
+    }
+
+    .tutorial-meta {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+
+    .tutorial-copy {
+      min-width: 0;
+    }
+
+    .tutorial-video {
+      min-width: 0;
+    }
+
+    .meta-box {
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .meta-box strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .meta-box a {
+      color: #8ec5ff;
+      word-break: break-word;
+      text-decoration: none;
+    }
+
+    .meta-box a:hover { text-decoration: underline; }
+
+    .video-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      border-radius: 16px;
+      display: block;
+      background: #050505;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+    }
+
+    .steps {
+      display: grid;
+      gap: 16px;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .num {
+      min-width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .tip-card {
+      padding: 28px;
+      border-radius: 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+
+    .tip-card.safe { border-color: rgba(116,198,157,0.26); }
+    .tip-card.attention { border-color: rgba(255,209,102,0.2); }
+
+    .tip-card h3 {
+      font-family: Orbitron, sans-serif;
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+
+    .tip-card.safe h3 { color: var(--ok); }
+    .tip-card.attention h3 { color: var(--warn); }
+
+    .tip-card ul {
+      padding-left: 18px;
+      color: #dfdfdf;
+    }
+
+    .tip-card li + li { margin-top: 10px; }
+
+    footer {
+      margin-top: 60px;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: 15px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.02);
+      border-radius: 14px;
+    }
+
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(26px);
+      filter: blur(6px);
+      transition: opacity .55s ease, transform .55s ease, filter .55s ease;
+      will-change: opacity, transform, filter;
+    }
+
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-on-scroll,
+      .reveal-on-scroll.is-visible {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        transition: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .tutorial-grid,
+      .tips-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tutorial-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .wrap { padding: 22px; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .hero { padding: 28px; }
+      .section-card,
+      .tutorial-card,
+      .tip-card { padding: 24px; }
+      .title { font-size: 28px; }
+      .hero h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-decorativo">
+    <div class="blur-ball b1"></div>
+    <div class="blur-ball b2"></div>
+    <div class="grid"></div>
+  </div>
+
+  <canvas id="snow-canvas"></canvas>
+
+  <main class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">
+          <img src="./imagens/force-war-logo.gif" alt="Force War logo">
+        </div>
+        <div>
+          <div class="title">Force War</div>
+          <div class="subtitle">Tutorial NewWay</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="banner">
+      <img src="./imagens/NewWay-01.jpg" alt="Banner Force War NewWay">
+    </section>
+
+    <section class="hero">
+      <div class="info" style="text-align:center;max-width:860px;margin:0 auto;">
+        <h1>Como baixar e injetar o mod menu NewWay</h1>
+        <p>Esta página concentra o passo a passo de uso do NewWay para GTA 5 nas versões Enhanced, Enhanced BattlEye e Legacy, com vídeo tutorial, local de login e orientações de segurança.</p>
+        <p>Antes de iniciar, confirme sua versão do jogo, siga o tutorial correspondente e mantenha a chave de acesso em local seguro.</p>
+      </div>
+
+      <div class="hero-actions">
+        <a class="btn" href="https://newwaymods.online/" target="_blank" rel="noopener">Abrir Site de Login</a>
+        <a class="hero-link" href="https://discord.gg/y3d62DcpJt" target="_blank" rel="noopener">Suporte no Discord</a>
+        <div class="hero-note">
+          <strong style="display:block;margin-bottom:6px;color:#fff;">Chave de acesso</strong>
+          Sua chave é enviada na DM. Use o botão <strong>Copiar Produto</strong> no Discord para localizar e copiar corretamente.
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section-card reveal-on-scroll">
+      <h2 class="section-title">Tutoriais por versão</h2>
+      <p class="section-copy">Escolha o vídeo certo para a versão do seu GTA 5. O site de login é o mesmo para todas.</p>
+
+      <div class="tutorial-grid">
+        <article class="tutorial-card reveal-on-scroll">
+          <div class="tutorial-copy">
+            <h3>NewWay - Versão Enhanced BattlEye</h3>
+            <div class="tutorial-meta">
+              <div class="meta-box">
+                <strong>Site de login</strong>
+                <a href="https://newwaymods.online/" target="_blank" rel="noopener">https://newwaymods.online/</a>
+              </div>
+              <div class="meta-box">
+                <strong>Vídeo tutorial</strong>
+                <a href="https://youtu.be/6BcexjFvE4U?t=135" target="_blank" rel="noopener">Assistir no YouTube</a>
+              </div>
+              <div class="meta-box">
+                <strong>Observação</strong>
+                A chave de acesso é enviada na sua DM.
+              </div>
+            </div>
+          </div>
+          <div class="tutorial-video">
+            <iframe
+              class="video-frame"
+              src="https://www.youtube.com/embed/6BcexjFvE4U?start=135"
+              title="Tutorial NewWay Enhanced BattlEye"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+          </div>
+        </article>
+
+        <article class="tutorial-card reveal-on-scroll">
+          <div class="tutorial-copy">
+            <h3>NewWay - Versão Enhanced</h3>
+            <div class="tutorial-meta">
+              <div class="meta-box">
+                <strong>Site de login</strong>
+                <a href="https://newwaymods.online/" target="_blank" rel="noopener">https://newwaymods.online/</a>
+              </div>
+              <div class="meta-box">
+                <strong>Vídeo tutorial</strong>
+                <a href="https://youtu.be/6BcexjFvE4U?t=135" target="_blank" rel="noopener">Assistir no YouTube</a>
+              </div>
+              <div class="meta-box">
+                <strong>Observação</strong>
+                A chave de acesso é enviada na sua DM.
+              </div>
+            </div>
+          </div>
+          <div class="tutorial-video">
+            <iframe
+              class="video-frame"
+              src="https://www.youtube.com/embed/6BcexjFvE4U?start=135"
+              title="Tutorial NewWay Enhanced"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+          </div>
+        </article>
+
+        <article class="tutorial-card reveal-on-scroll">
+          <div class="tutorial-copy">
+            <h3>NewWay - Versão Legacy</h3>
+            <div class="tutorial-meta">
+              <div class="meta-box">
+                <strong>Site de login</strong>
+                <a href="https://newwaymods.online/" target="_blank" rel="noopener">https://newwaymods.online/</a>
+              </div>
+              <div class="meta-box">
+                <strong>Vídeo tutorial</strong>
+                <a href="https://youtu.be/j7dAUclAOU4?t=155" target="_blank" rel="noopener">Assistir no YouTube</a>
+              </div>
+              <div class="meta-box">
+                <strong>Observação</strong>
+                A chave de acesso é enviada na sua DM.
+              </div>
+            </div>
+          </div>
+          <div class="tutorial-video">
+            <iframe
+              class="video-frame"
+              src="https://www.youtube.com/embed/j7dAUclAOU4?start=155"
+              title="Tutorial NewWay Legacy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel section-card reveal-on-scroll">
+      <h2 class="section-title">Como pegar sua chave no Discord</h2>
+      <p class="section-copy">Se a chave foi enviada por DM, siga este fluxo rápido para copiar o produto corretamente.</p>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><div>Abra a DM onde o sistema automatizado enviou sua compra.</div></div>
+        <div class="step"><div class="num">2</div><div>Clique no botão <strong>Copiar Produto</strong> exibido na mensagem do pedido.</div></div>
+        <div class="step"><div class="num">3</div><div>Confira o conteúdo copiado. A chave costuma vir junto ao nome do produto e ao tutorial.</div></div>
+        <div class="step"><div class="num">4</div><div>Volte para o site de login do NewWay e cole a chave exatamente como recebeu, sem alterar caracteres.</div></div>
+      </div>
+    </section>
+
+    <section class="tips-grid">
+      <article class="tip-card attention reveal-on-scroll">
+        <h3>Recomendações</h3>
+        <ul>
+          <li>Injeção de money: 30 milhões por dia a cada 24 horas.</li>
+          <li>Gasto de money: 15 milhões por dia a cada 24 horas.</li>
+          <li>Faça o desbloqueio da sua conta trocando de sessão; não desbloqueie tudo na mesma sessão.</li>
+          <li>Não tente injetar o mod com o BattlEye ligado.</li>
+          <li>Não faça upagem de conta ou qualquer tipo de alteração em sessão pública.</li>
+          <li>Coloque o nível que quiser, mas nunca tente tirar nível, exemplo: 2000 descer para 1000.</li>
+        </ul>
+      </article>
+
+      <article class="tip-card safe reveal-on-scroll">
+        <h3>Uso 100% safe</h3>
+        <ul>
+          <li>Pode utilizar o mod para fazer missões e gerar money por missões.</li>
+          <li>Pode utilizar o mod para criar trajes modders.</li>
+          <li>Pode utilizar o mod para criar carros modders.</li>
+          <li>As demais funções são consideradas seguras e testadas pela equipe.</li>
+        </ul>
+      </article>
+    </section>
+
+    <footer>
+      <div style="margin-bottom:20px;">
+        <h4 style="font-family:Orbitron,sans-serif;font-size:20px;color:#fff;margin-bottom:6px;">Suporte Oficial</h4>
+        <p style="max-width:560px;margin:0 auto 16px;color:var(--muted);">
+          Em caso de dúvidas sobre injeção, chave, login ou uso correto do mod NewWay, o suporte oficial continua sendo feito pelo Discord.
+        </p>
+        <div class="footer-actions">
+          <a class="btn" href="https://discord.gg/y3d62DcpJt" target="_blank" rel="noopener">Discord Force War</a>
+          <a class="btn" href="https://discord.gg/FywMTRUrMz" target="_blank" rel="noopener">Discord NewWay</a>
+        </div>
+      </div>
+
+      <div style="margin-top:25px;color:var(--muted);">
+        &copy; <strong>Force War</strong> - Tutorial NewWay.
+      </div>
+    </footer>
+  </main>
+
+  <script src="./js/force-war-config.js"></script>
+  <script>
+    const canvas = document.getElementById("snow-canvas");
+    const ctx = canvas.getContext("2d");
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    const FLAKE_COUNT = 180;
+    const flakes = [];
+
+    for (let i = 0; i < FLAKE_COUNT; i++) {
+      flakes.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 1.8 + 0.6,
+        speedX: -(Math.random() * 1.4 + 0.4),
+        speedY: -(Math.random() * 1.0 + 0.3),
+        opacity: Math.random() * 0.6 + 0.4
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (const f of flakes) {
+        ctx.globalAlpha = f.opacity;
+        ctx.fillStyle = "#ff5c5c";
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        f.x += f.speedX;
+        f.y += f.speedY;
+
+        if (f.x < -10 || f.y < -10) {
+          f.x = canvas.width + Math.random() * 10;
+          f.y = Math.random() * canvas.height;
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    const revealItems = document.querySelectorAll(".reveal-on-scroll");
+
+    if ("IntersectionObserver" in window) {
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+          } else {
+            entry.target.classList.remove("is-visible");
+          }
+        });
+      }, {
+        threshold: 0.05,
+        rootMargin: "0px 0px -2% 0px"
+      });
+
+      revealItems.forEach((item) => revealObserver.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add("is-visible"));
+    }
+
+  </script>
+</body>
+</html>
