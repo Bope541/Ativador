@@ -1,4 +1,4 @@
 window.FW_SITE_CONFIG = {
-  version: 'v4.2',
-  executorUrl: 'https://github.com/Bope541/Executor-Force-War/releases/download/v4.2/ForceWar.exe'
+  version: 'v4.3',
+  executorUrl: 'https://github.com/Bope541/Executor-Force-War/releases/download/v4.3/ForceWar.exe'
 };
