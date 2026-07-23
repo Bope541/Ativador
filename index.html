@@ -211,7 +211,7 @@
         </div>
       </div>
       <div style="margin-left:auto;text-align:right">
-        <div class="badge">Versão: <strong id="site-version" style="margin-left:20px">v4.6</strong></div>
+        <div class="badge">Versão: <strong id="site-version" style="margin-left:20px"></strong></div>
       </div>
     </header>
 
@@ -630,12 +630,9 @@
     </footer>
   </main>
 
-  <script src="./js/force-war-config.js?v=4.6.2"></script>
+  <script src="./js/force-war-config.js"></script>
   <script>
-    const CONFIG = window.FW_SITE_CONFIG || {
-      version: 'v4.6.2',
-      executorUrl: 'https://github.com/Bope541/Executor-Force-War/releases/download/v4.6.2/ForceWar.exe'
-    };
+    const CONFIG = window.FW_SITE_CONFIG;
 
     document.getElementById('dl-executor').href = CONFIG.executorUrl;
     document.getElementById('site-version').textContent = CONFIG.version;
